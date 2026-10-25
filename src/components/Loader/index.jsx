@@ -1,7 +1,7 @@
 import "./index.css";
 
 const Loader = () => {
-  return <div className="loader"></div>;
+  return <div className="loader" />;
 };
 
 export default Loader;

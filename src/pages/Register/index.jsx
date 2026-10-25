@@ -1,13 +1,51 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { registerUser } from "../../services/api";
 
 import "./index.css";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await registerUser({
+        name,
+        email,
+        password,
+      });
+
+      navigate("/login");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="auth-page">
       <main className="auth-layout">
-
-        {/* Left Side - Branding */}
         <section className="auth-brand-section">
           <div className="brand-content">
             <Link to="/" className="brand-logo">
@@ -127,10 +165,8 @@ const Register = () => {
           </div>
         </section>
 
-        {/* Right Side - Register */}
         <section className="auth-form-section">
           <div className="auth-card">
-
             <div className="auth-header">
               <p className="auth-label">
                 CREATE YOUR ACCOUNT
@@ -143,7 +179,10 @@ const Register = () => {
               </p>
             </div>
 
-            <form className="auth-form">
+            <form
+              className="auth-form"
+              onSubmit={handleSubmit}
+            >
               <div className="form-group">
                 <label htmlFor="name">
                   Full name
@@ -153,6 +192,11 @@ const Register = () => {
                   id="name"
                   type="text"
                   placeholder="Enter your full name"
+                  value={name}
+                  onChange={(event) =>
+                    setName(event.target.value)
+                  }
+                  required
                 />
               </div>
 
@@ -165,6 +209,11 @@ const Register = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
+                  required
                 />
               </div>
 
@@ -177,6 +226,11 @@ const Register = () => {
                   id="password"
                   type="password"
                   placeholder="Create a password"
+                  value={password}
+                  onChange={(event) =>
+                    setPassword(event.target.value)
+                  }
+                  required
                 />
               </div>
 
@@ -189,36 +243,43 @@ const Register = () => {
                   id="confirm-password"
                   type="password"
                   placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(event) =>
+                    setConfirmPassword(event.target.value)
+                  }
+                  required
                 />
               </div>
+
+              {error && (
+                <p className="auth-error">
+                  {error}
+                </p>
+              )}
 
               <button
                 type="submit"
                 className="auth-button"
+                disabled={loading}
               >
-                Create Account
+                {loading
+                  ? "Creating Account..."
+                  : "Create Account"}
               </button>
             </form>
 
             <div className="auth-footer">
               <p>
                 Already have an account?{" "}
-                <Link to="/login">
-                  Login
-                </Link>
+                <Link to="/login">Login</Link>
               </p>
             </div>
 
-            <Link
-              to="/"
-              className="back-home"
-            >
+            <Link to="/" className="back-home">
               ← Back to Store
             </Link>
-
           </div>
         </section>
-
       </main>
     </div>
   );

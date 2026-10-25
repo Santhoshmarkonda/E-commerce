@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom";
+
 import { useCart } from "../../context/CartContext";
 
 import "./index.css";
 
-const ProductCard = ({ value }) => {
+const ProductCard = ({
+  value,
+  isAdmin = false,
+  onEdit,
+  onDelete,
+}) => {
   const {
-    id,
+    _id,
     title,
     category,
     price,
@@ -22,27 +28,27 @@ const ProductCard = ({ value }) => {
   } = useCart();
 
   const cartItem = cartItems.find(
-    (item) => item.id === id
+    (item) => item._id === _id
   );
 
-  const quantity = cartItem ? cartItem.quantity : 0;
+  const quantity = cartItem?.quantity ?? 0;
 
   const handleAddToCart = () => {
     addToCart(value);
   };
 
   const handleIncrease = () => {
-    increaseQuantity(id);
+    increaseQuantity(_id);
   };
 
   const handleDecrease = () => {
-    decreaseQuantity(id);
+    decreaseQuantity(_id);
   };
 
   return (
     <li className="product-card">
       <Link
-        to={`/products/${id}`}
+        to={`/products/${_id}`}
         className="product-image-link"
       >
         <div className="product-image-container">
@@ -56,7 +62,7 @@ const ProductCard = ({ value }) => {
 
       <div className="product-info">
         <Link
-          to={`/products/${id}`}
+          to={`/products/${_id}`}
           className="product-title-link"
         >
           <span className="product-brand">
@@ -110,6 +116,24 @@ const ProductCard = ({ value }) => {
             </div>
           )}
         </div>
+
+        {isAdmin && (
+          <div className="admin-product-actions">
+            <button
+              className="edit-product-button"
+              onClick={() => onEdit(value)}
+            >
+              Edit
+            </button>
+
+            <button
+              className="delete-product-button"
+              onClick={() => onDelete(_id)}
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </li>
   );

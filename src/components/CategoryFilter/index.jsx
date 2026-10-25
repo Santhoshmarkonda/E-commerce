@@ -5,7 +5,11 @@ const CategoryFilter = ({ categories, value, onChange }) => {
     <div className="category-filter">
       <label htmlFor="category">Category:</label>
 
-      <select id="category" value={value} onChange={onChange}>
+      <select
+        id="category"
+        value={value}
+        onChange={onChange}
+      >
         <option value="all">All Categories</option>
 
         {categories.map((category) => (

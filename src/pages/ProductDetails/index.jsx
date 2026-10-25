@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useCart } from "../../context/CartContext";
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Loader from "../../components/Loader";
 
+import { useCart } from "../../context/CartContext";
 import { getProductById } from "../../services/api";
 
 import "./index.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { addToCart } = useCart();
+  const {
+    cartItems,
+    addToCart,
+    increaseQuantity,
+    decreaseQuantity,
+  } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,10 +26,10 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         const data = await getProductById(id);
-
         setProduct(data);
       } catch (error) {
         console.log(error);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
@@ -33,15 +38,19 @@ const ProductDetails = () => {
     fetchProduct();
   }, [id]);
 
+  // Find if this product is already in the cart to check its quantity
+  const cartItem = cartItems.find(
+    (item) => item._id === product?._id
+  );
+  const quantity = cartItem?.quantity ?? 0;
+
   if (loading) {
     return (
       <>
         <Header />
-
         <div className="loader-container">
           <Loader />
         </div>
-
         <Footer />
       </>
     );
@@ -51,11 +60,9 @@ const ProductDetails = () => {
     return (
       <>
         <Header />
-
         <p className="not-found">
           Product not found.
         </p>
-
         <Footer />
       </>
     );
@@ -63,8 +70,6 @@ const ProductDetails = () => {
 
   return (
     <div className="product-details-page">
-      <Header />
-
       <main className="product-details">
         <div className="product-details-image">
           <img
@@ -94,16 +99,34 @@ const ProductDetails = () => {
 
           <h2>${product.price}</h2>
 
-          <button
-            className="add-cart-button"
-            onClick={() => addToCart(product)}
-          >
-            Add to Cart
-          </button>
+          {quantity === 0 ? (
+            <button
+              className="add-cart-button"
+              onClick={() => addToCart(product)}
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <div className="quantity-controls product-details-quantity">
+              <button
+                onClick={() => decreaseQuantity(product._id)}
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+
+              <span>{quantity}</span>
+
+              <button
+                onClick={() => increaseQuantity(product._id)}
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

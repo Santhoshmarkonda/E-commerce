@@ -10,7 +10,9 @@ const SearchBar = ({ value, onChange }) => {
         placeholder="Search products..."
       />
 
-      <button type="button">Search</button>
+      <button type="button">
+        Search
+      </button>
     </div>
   );
 };

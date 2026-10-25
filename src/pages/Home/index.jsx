@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import ProductCard from "../../components/ProductCard";
 import Loader from "../../components/Loader";
 
@@ -18,8 +16,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const data = await getProducts();
-
-        setProducts(data.products.slice(0, 6));
+        setProducts(data.slice(0, 6));
       } catch (error) {
         console.log(error);
       } finally {
@@ -32,9 +29,8 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <Header />
-
       <main className="home-content">
+
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-content">
@@ -99,9 +95,7 @@ const Home = () => {
 
             <h2>Featured Products</h2>
 
-            <p>
-              Discover some of our popular products.
-            </p>
+            <p>Discover some of our popular products.</p>
           </div>
 
           {loading ? (
@@ -112,7 +106,7 @@ const Home = () => {
             <ul className="featured-products-grid">
               {products.map((product) => (
                 <ProductCard
-                  key={product.id}
+                  key={product._id}
                   value={product}
                 />
               ))}
@@ -127,32 +121,25 @@ const Home = () => {
           </Link>
         </section>
 
-        {/* Benefits */}
+        {/* Benefits Section */}
         <section className="benefits-section">
           <div className="benefit-card">
             <h3>Quality Products</h3>
-            <p>
-              Carefully selected products for your needs.
-            </p>
+            <p>Carefully selected products for your needs.</p>
           </div>
 
           <div className="benefit-card">
             <h3>Great Prices</h3>
-            <p>
-              Find products at competitive prices.
-            </p>
+            <p>Find products at competitive prices.</p>
           </div>
 
           <div className="benefit-card">
             <h3>Easy Shopping</h3>
-            <p>
-              Simple and convenient shopping experience.
-            </p>
+            <p>Simple and convenient shopping experience.</p>
           </div>
         </section>
-      </main>
 
-      <Footer />
+      </main>
     </div>
   );
 };

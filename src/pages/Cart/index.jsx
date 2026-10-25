@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+
 import { useCart } from "../../context/CartContext";
 
 import "./index.css";
@@ -17,12 +16,13 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      <Header />
 
       <main className="cart-content">
         <div className="cart-header">
           <p className="cart-label">SHOPPING CART</p>
+
           <h1>Your Cart</h1>
+
           <p>Review your items before checkout.</p>
         </div>
 
@@ -47,7 +47,9 @@ const Cart = () => {
           <div className="cart-container">
             <div className="cart-items-section">
               <div className="cart-items-header">
-                <h2>Cart Items ({cartItems.length})</h2>
+                <h2>
+                  Cart Items ({cartItems.length})
+                </h2>
 
                 <button
                   className="clear-cart-button"
@@ -59,7 +61,10 @@ const Cart = () => {
 
               <div className="cart-items">
                 {cartItems.map((item) => (
-                  <div className="cart-item" key={item.id}>
+                  <div
+                    className="cart-item"
+                    key={item._id}
+                  >
                     <img
                       src={item.thumbnail}
                       alt={item.title}
@@ -85,7 +90,7 @@ const Cart = () => {
                         <div className="quantity-controls">
                           <button
                             onClick={() =>
-                              decreaseQuantity(item.id)
+                              decreaseQuantity(item._id)
                             }
                           >
                             −
@@ -95,7 +100,7 @@ const Cart = () => {
 
                           <button
                             onClick={() =>
-                              increaseQuantity(item.id)
+                              increaseQuantity(item._id)
                             }
                           >
                             +
@@ -105,7 +110,7 @@ const Cart = () => {
                         <button
                           className="remove-button"
                           onClick={() =>
-                            removeFromCart(item.id)
+                            removeFromCart(item._id)
                           }
                         >
                           Remove
@@ -163,8 +168,6 @@ const Cart = () => {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 };

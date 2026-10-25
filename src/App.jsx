@@ -7,6 +7,10 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+import Layout from "./components/Layout";
+
 import "./App.css";
 
 const App = () => {
@@ -14,12 +18,57 @@ const App = () => {
     <BrowserRouter>
       <div className="app">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+
+          {/* Public Routes */}
+
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
+          {/* Protected Routes */}
+
+          <Route
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route
+              path="/"
+              element={<Home />}
+            />
+
+            <Route
+              path="/products"
+              element={<Products />}
+            />
+
+            <Route
+              path="/products/:id"
+              element={<ProductDetails />}
+            />
+
+            <Route
+              path="/cart"
+              element={<Cart />}
+            />
+          </Route>
+
         </Routes>
       </div>
     </BrowserRouter>
