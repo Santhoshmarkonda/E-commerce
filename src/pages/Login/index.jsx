@@ -137,10 +137,6 @@ const Login = () => {
               <div className="form-field">
                 <div className="field-header">
                   <label htmlFor="password">Password</label>
-
-                  <Link to="#" className="forgot-link">
-                    Forgot password?
-                  </Link>
                 </div>
 
                 <div className="password-field">
