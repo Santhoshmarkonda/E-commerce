@@ -3,17 +3,21 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { loginUser } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import { useCart } from "../../context/CartContext"; // <-- Import useCart
+import { useCart } from "../../context/CartContext";
 
 import "./index.css";
 
 const Login = () => {
   const navigate = useNavigate();
+
   const { login } = useAuth();
-  const { loadUserCart } = useCart(); // <-- Extract loadUserCart
+  const { loadUserCart } = useCart();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +37,7 @@ const Login = () => {
 
       login(data.user, data.token);
 
-      // Fetch the specific user's/admin's cart immediately on login!
-      await loadUserCart(); 
+      await loadUserCart();
 
       console.log("LOGIN SUCCESS");
 
@@ -49,176 +52,170 @@ const Login = () => {
   return (
     <div className="auth-page">
       <main className="auth-layout">
-        <section className="auth-brand-section">
-          <div className="brand-content">
+        {/* =====================================================
+            LEFT BRAND PANEL
+        ====================================================== */}
+        <section className="auth-brand-panel">
+          <div className="brand-decoration brand-decoration-one" />
+          <div className="brand-decoration brand-decoration-two" />
+          <div className="brand-decoration brand-decoration-three" />
+
+          <div className="brand-panel-content">
             <Link to="/" className="brand-logo">
-              E-commerce
+              <span className="brand-mark">S</span>
+
+              <span className="brand-name">
+                Smart<span>Mart</span>
+              </span>
             </Link>
 
-            <p className="brand-label">YOUR SHOPPING DESTINATION</p>
+            <div className="brand-message">
+              <p className="brand-eyebrow">THE SMARTER WAY TO SHOP</p>
 
-            <h1>
-              Everything you need,
-              <br />
-              all in one place.
-            </h1>
+              <h1>
+                Everything you want.
+                <span> All in one place.</span>
+              </h1>
 
-            <p className="brand-description">
-              Discover quality products, great prices, and a simple shopping
-              experience.
-            </p>
+              <p className="brand-description">
+                Discover products you'll love, explore everyday essentials, and
+                enjoy a shopping experience designed around you.
+              </p>
+            </div>
 
-            <div className="cart-illustration">
-              <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M70 70 H105 L135 245 H375"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+            <div className="brand-bottom">
+              <div className="brand-line" />
 
-                <path
-                  d="M125 100 H420 L385 225 H145 Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  strokeLinejoin="round"
-                />
-
-                <line
-                  x1="145"
-                  y1="140"
-                  x2="405"
-                  y2="140"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <line
-                  x1="153"
-                  y1="180"
-                  x2="395"
-                  y2="180"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <line
-                  x1="180"
-                  y1="105"
-                  x2="180"
-                  y2="220"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <line
-                  x1="235"
-                  y1="105"
-                  x2="235"
-                  y2="220"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <line
-                  x1="290"
-                  y1="105"
-                  x2="290"
-                  y2="220"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <line
-                  x1="345"
-                  y1="105"
-                  x2="345"
-                  y2="220"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                />
-
-                <circle
-                  cx="175"
-                  cy="275"
-                  r="25"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                />
-
-                <circle
-                  cx="350"
-                  cy="275"
-                  r="25"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                />
-              </svg>
+              <p>Quality products · Simple shopping · Better choices</p>
             </div>
           </div>
         </section>
 
-        <section className="auth-form-section">
-          <div className="auth-card">
-            <div className="auth-header">
-              <p className="auth-label">WELCOME BACK</p>
+        {/* =====================================================
+            RIGHT LOGIN PANEL
+        ====================================================== */}
+        <section className="auth-form-panel">
+          <div className="auth-container">
+            {/* Mobile logo */}
+            <div className="mobile-brand">
+              <Link to="/" className="brand-logo">
+                <span className="brand-mark">S</span>
 
-              <h2>Login</h2>
-
-              <p>Sign in to continue shopping.</p>
+                <span className="brand-name">
+                  Smart<span>Mart</span>
+                </span>
+              </Link>
             </div>
 
+            {/* Header */}
+            <header className="auth-header">
+              <p className="auth-eyebrow">WELCOME BACK</p>
+
+              <h2>Sign in to your account</h2>
+
+              <p>Enter your details below to continue.</p>
+            </header>
+
+            {/* Login Form */}
             <form className="auth-form" onSubmit={handleSubmit}>
-              <div className="form-group">
+              {/* Email */}
+              <div className="form-field">
                 <label htmlFor="email">Email address</label>
 
                 <input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
                   value={email}
+                  placeholder="you@example.com"
+                  autoComplete="email"
                   onChange={(event) => setEmail(event.target.value)}
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
+              {/* Password */}
+              <div className="form-field">
+                <div className="field-header">
+                  <label htmlFor="password">Password</label>
 
+                  <Link to="#" className="forgot-link">
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <div className="password-field">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword((previous) => !previous)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember me */}
+              <label className="remember-me">
                 <input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(event) => setRememberMe(event.target.checked)}
                 />
-              </div>
 
-              <div className="forgot-password">
-                <Link to="#">Forgot password?</Link>
-              </div>
+                <span className="custom-checkbox" />
 
-              {error && <p className="auth-error">{error}</p>}
+                <span className="remember-text">Remember me</span>
+              </label>
 
-              <button type="submit" className="auth-button" disabled={loading}>
-                {loading ? "Logging in..." : "Login"}
+              {/* Error */}
+              {error && (
+                <div className="auth-error" role="alert">
+                  <span className="error-indicator">!</span>
+
+                  <p>{error}</p>
+                </div>
+              )}
+
+              {/* Submit */}
+              <button type="submit" className="login-button" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="loading-spinner" />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign in
+                    <span className="login-arrow">→</span>
+                  </>
+                )}
               </button>
             </form>
 
-            <div className="auth-footer">
-              <p>
-                Don't have an account? <Link to="/register">Sign up</Link>
-              </p>
+            {/* Register */}
+            <div className="signup-section">
+              <p>Don't have an account?</p>
+
+              <Link to="/register">Create an account</Link>
             </div>
 
-            <Link to="/" className="back-home">
-              ← Back to Store
+            {/* Back */}
+            <Link to="/" className="back-to-store">
+              <span>←</span>
+              Back to store
             </Link>
           </div>
         </section>
