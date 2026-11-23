@@ -6,10 +6,12 @@
   display: flex;
   align-items: stretch;
   width: 100%;
+  min-height: 46px;
   height: 46px;
   background-color: var(--bg-muted-btn);
   border: 1px solid transparent;
   border-radius: 0;
+  box-sizing: border-box;
   transition: border-color 0.15s ease;
 }
 
@@ -19,6 +21,8 @@
 
 .search-bar input {
   flex: 1;
+  min-width: 0;
+  height: 100%;
   padding: 0 16px 0 40px;
   border: none;
   border-radius: 0;
@@ -38,6 +42,8 @@
 }
 
 .search-bar button {
+  flex-shrink: 0;
+  height: 100%;
   padding: 0 20px;
   border: none;
   border-radius: 0;
@@ -53,4 +59,35 @@
 
 .search-bar button:hover {
   color: var(--ink-primary);
+}
+
+@media (max-width: 640px) {
+  .search-bar {
+    min-height: 48px;
+    height: 48px;
+  }
+
+  .search-bar input {
+    font-size: 14px;
+  }
+}
+
+/* Mobile S (320px – 380px) */
+@media (max-width: 380px) {
+  .search-bar {
+    min-height: 44px;
+    height: 44px;
+  }
+
+  .search-bar input {
+    padding: 0 8px 0 34px;
+    background-position: 10px center;
+    background-size: 14px 14px;
+    font-size: 13px;
+  }
+
+  .search-bar button {
+    padding: 0 12px;
+    font-size: 11px;
+  }
 }

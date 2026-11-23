@@ -9,6 +9,7 @@
   padding: 20px 48px;
   background-color: var(--bg-canvas);
   border-bottom: 1px solid var(--border-light);
+  box-sizing: border-box;
 }
 
 /* Left Brand Title */
@@ -146,5 +147,33 @@
 
   .user-name {
     display: none;
+  }
+}
+
+/* Mobile S (320px – 380px) */
+@media (max-width: 380px) {
+  .header-container {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+
+  .header-nav {
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .header-nav a {
+    font-size: 12px;
+  }
+
+  .login-btn,
+  .logout-btn {
+    padding: 7px 12px;
+    font-size: 10px;
   }
 }
