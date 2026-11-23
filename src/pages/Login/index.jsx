@@ -9,7 +9,6 @@ import "./index.css";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const { login } = useAuth();
   const { loadUserCart } = useCart();
 
@@ -23,24 +22,13 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setError("");
     setLoading(true);
 
     try {
-      const data = await loginUser({
-        email,
-        password,
-      });
-
-      console.log("LOGIN RESPONSE:", data);
-
+      const data = await loginUser({ email, password });
       login(data.user, data.token);
-
       await loadUserCart();
-
-      console.log("LOGIN SUCCESS");
-
       navigate("/");
     } catch (error) {
       setError(error.message);
@@ -51,171 +39,102 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <main className="auth-layout">
-        {/* =====================================================
-            LEFT BRAND PANEL
-        ====================================================== */}
-        <section className="auth-brand-panel">
-          <div className="brand-decoration brand-decoration-one" />
-          <div className="brand-decoration brand-decoration-two" />
-          <div className="brand-decoration brand-decoration-three" />
+      <div className="auth-wrapper">
+        {/* Title & Intro Outside the Form Card */}
+        <div className="auth-outer-header">
+          <Link to="/" className="auth-brand-title">
+            E-COMMERCE
+          </Link>
+          <p className="auth-outer-desc">
+            Everything you need, curated in one place. Sign in to manage your
+            bag, track orders, and checkout seamlessly.
+          </p>
+        </div>
 
-          <div className="brand-panel-content">
-            <Link to="/" className="brand-logo">
-              <span className="brand-mark">S</span>
-
-              <span className="brand-name">
-                Smart<span>Mart</span>
-              </span>
-            </Link>
-
-            <div className="brand-message">
-              <p className="brand-eyebrow">THE SMARTER WAY TO SHOP</p>
-
-              <h1>
-                Everything you want.
-                <span> All in one place.</span>
-              </h1>
-
-              <p className="brand-description">
-                Discover products you'll love, explore everyday essentials, and
-                enjoy a shopping experience designed around you.
-              </p>
-            </div>
-
-            <div className="brand-bottom">
-              <div className="brand-line" />
-
-              <p>Quality products · Simple shopping · Better choices</p>
-            </div>
+        {/* Bordered Form Card */}
+        <div className="auth-box">
+          <div className="auth-card-header">
+            <span className="auth-step-tag">MEMBER ACCESS</span>
+            <h1>SIGN IN</h1>
           </div>
-        </section>
 
-        {/* =====================================================
-            RIGHT LOGIN PANEL
-        ====================================================== */}
-        <section className="auth-form-panel">
-          <div className="auth-container">
-            {/* Mobile logo */}
-            <div className="mobile-brand">
-              <Link to="/" className="brand-logo">
-                <span className="brand-mark">S</span>
-
-                <span className="brand-name">
-                  Smart<span>Mart</span>
-                </span>
-              </Link>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-field">
+              <label htmlFor="email">EMAIL ADDRESS</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                placeholder="name@example.com"
+                autoComplete="email"
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
             </div>
 
-            {/* Header */}
-            <header className="auth-header">
-              <p className="auth-eyebrow">WELCOME BACK</p>
-
-              <h2>Sign in to your account</h2>
-
-              <p>Enter your details below to continue.</p>
-            </header>
-
-            {/* Login Form */}
-            <form className="auth-form" onSubmit={handleSubmit}>
-              {/* Email */}
-              <div className="form-field">
-                <label htmlFor="email">Email address</label>
-
+            <div className="form-field">
+              <label htmlFor="password">PASSWORD</label>
+              <div className="password-field">
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  onChange={(event) => setEmail(event.target.value)}
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
+                  onChange={(event) => setPassword(event.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "HIDE" : "SHOW"}
+                </button>
               </div>
+            </div>
 
-              {/* Password */}
-              <div className="form-field">
-                <div className="field-header">
-                  <label htmlFor="password">Password</label>
-                </div>
-
-                <div className="password-field">
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                  />
-
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword((previous) => !previous)}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-              </div>
-
-              {/* Remember me */}
-              <label className="remember-me">
+            <div className="auth-options-row">
+              <label className="remember-check">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(event) => setRememberMe(event.target.checked)}
                 />
-
-                <span className="custom-checkbox" />
-
-                <span className="remember-text">Remember me</span>
+                <span>Keep me signed in</span>
               </label>
-
-              {/* Error */}
-              {error && (
-                <div className="auth-error" role="alert">
-                  <span className="error-indicator">!</span>
-
-                  <p>{error}</p>
-                </div>
-              )}
-
-              {/* Submit */}
-              <button type="submit" className="login-button" disabled={loading}>
-                {loading ? (
-                  <>
-                    <span className="loading-spinner" />
-                    Signing in...
-                  </>
-                ) : (
-                  <>
-                    Sign in
-                    <span className="login-arrow">→</span>
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Register */}
-            <div className="signup-section">
-              <p>Don't have an account?</p>
-
-              <Link to="/register">Create an account</Link>
             </div>
 
-            {/* Back */}
-            <Link to="/" className="back-to-store">
-              <span>←</span>
-              Back to store
-            </Link>
+            {error && (
+              <p className="auth-error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="auth-submit-btn"
+              disabled={loading}
+            >
+              {loading ? "SIGNING IN..." : "SIGN IN"}
+            </button>
+          </form>
+
+          <p className="auth-legal-note">
+            By signing in, you agree to our Terms of Service and Privacy Policy.
+          </p>
+
+          <div className="auth-footer">
+            <span>Don&apos;t have an account?</span>
+            <Link to="/register">Create one</Link>
           </div>
-        </section>
-      </main>
+        </div>
+
+        <Link to="/" className="auth-back-link">
+          ← CONTINUE BROWSING STORE
+        </Link>
+      </div>
     </div>
   );
 };

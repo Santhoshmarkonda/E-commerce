@@ -6,15 +6,15 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
-          <h2>E-commerce<span>.</span></h2>
-          <p>© 2026 E-commerce Inc. All rights reserved.</p>
+          <span className="footer-mark">E-COMMERCE</span>
+          <p>© 2026 All rights reserved.</p>
         </div>
 
         <div className="footer-links">
+          <Link to="/products">Collections</Link>
           <Link to="/">About</Link>
-          <Link to="/">Contact</Link>
           <Link to="/">Privacy Policy</Link>
-          <Link to="/">Terms of Service</Link>
+          <Link to="/">Terms &amp; Conditions</Link>
         </div>
       </div>
     </footer>
